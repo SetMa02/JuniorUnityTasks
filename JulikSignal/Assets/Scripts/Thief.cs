@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class Julik : MonoBehaviour
+public class Thief : MonoBehaviour
 {
     [SerializeField]private GameObject _waypoint;
     [SerializeField]private GameObject _exit;

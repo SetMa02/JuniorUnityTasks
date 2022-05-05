@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class DoorSignalisation : MonoBehaviour
+public class Signalisation : MonoBehaviour
 {
     [SerializeField] private float _peroidiciy = 3;  
     private AudioSource _audioSource;
-    private bool isEnter = false;
+    private bool _isEnter = false;
     private float _minVolume = 0;
 
     private void Start()
@@ -18,27 +18,27 @@ public class DoorSignalisation : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.TryGetComponent<Julik>(out Julik julik))
+        if (other.gameObject.TryGetComponent<Thief>(out Thief julik))
         {
             _audioSource.Play();
             _audioSource.volume = _minVolume;
-            isEnter = true;
+            _isEnter = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        isEnter = false;
+        _isEnter = false;
     }
 
     private void FixedUpdate()
     {
-        if (isEnter == true)
+        if (_isEnter == true)
         {
             _audioSource.volume += Time.deltaTime * _peroidiciy;
         }
 
-        if (isEnter == false)
+        if (_isEnter == false)
         {
             _audioSource.volume -= Time.deltaTime * _peroidiciy;
         }
