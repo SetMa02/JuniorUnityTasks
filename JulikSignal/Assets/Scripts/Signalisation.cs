@@ -8,8 +8,8 @@ public class Signalisation : MonoBehaviour
 {
     [SerializeField] private float _peroidiciy = 3;  
     private AudioSource _audioSource;
-    private bool _isEnter = false;
     private float _minVolume = 0;
+    private float _maxVolume = 1;
 
     private void Start()
     {
@@ -22,25 +22,40 @@ public class Signalisation : MonoBehaviour
         {
             _audioSource.Play();
             _audioSource.volume = _minVolume;
-            _isEnter = true;
+            StartCoroutine(StartSignalisation());
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        _isEnter = false;
+        StartCoroutine(StopSignalisation());
     }
 
-    private void FixedUpdate()
+    private IEnumerator StartSignalisation()
     {
-        if (_isEnter == true)
+        float volume;
+        while (true)
         {
-            _audioSource.volume += Time.deltaTime * _peroidiciy;
-        }
+            volume = _maxVolume / _peroidiciy * Time.deltaTime;
 
-        if (_isEnter == false)
+            _audioSource.volume += volume;
+
+            if (_audioSource.volume >= _maxVolume) break;
+            yield return null;
+        }
+    }
+
+    private IEnumerator StopSignalisation()
+    {
+        float volume;
+        while (true)
         {
-            _audioSource.volume -= Time.deltaTime * _peroidiciy;
+            volume = _maxVolume / _peroidiciy * Time.deltaTime;
+
+            _audioSource.volume -= volume;
+
+            if (_audioSource.volume >= _maxVolume) break;
+            yield return null;
         }
     }
 }
