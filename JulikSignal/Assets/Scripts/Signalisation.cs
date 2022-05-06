@@ -7,9 +7,11 @@ using UnityEngine;
 public class Signalisation : MonoBehaviour
 {
     [SerializeField] private float _peroidiciy = 3;  
+    
     private AudioSource _audioSource;
     private float _minVolume = 0;
     private float _maxVolume = 1;
+    private bool _isEnter = false;
 
     private void Start()
     {
@@ -22,40 +24,35 @@ public class Signalisation : MonoBehaviour
         {
             _audioSource.Play();
             _audioSource.volume = _minVolume;
-            StartCoroutine(StartSignalisation());
+            StartCoroutine(SignalisationManager());
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        StartCoroutine(StopSignalisation());
+        StartCoroutine(SignalisationManager());
     }
 
-    private IEnumerator StartSignalisation()
+    private IEnumerator SignalisationManager()
     {
-        float volume;
-        while (true)
+        if (_isEnter == false)
         {
-            volume = _maxVolume / _peroidiciy * Time.deltaTime;
-
-            _audioSource.volume += volume;
-
-            if (_audioSource.volume >= _maxVolume) break;
-            yield return null;
+            _isEnter = true;
+            while (_audioSource.volume != _maxVolume)
+            {
+                _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _maxVolume, _peroidiciy * Time.deltaTime);
+                yield return null;
+            }
         }
-    }
-
-    private IEnumerator StopSignalisation()
-    {
-        float volume;
-        while (true)
+        else if(_isEnter == true)
         {
-            volume = _maxVolume / _peroidiciy * Time.deltaTime;
-
-            _audioSource.volume -= volume;
-
-            if (_audioSource.volume >= _maxVolume) break;
-            yield return null;
+            _isEnter = false;
+            while (_audioSource.volume != _minVolume)
+            {
+                _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _minVolume, _peroidiciy * Time.deltaTime);
+                yield return null;
+            }
+            _audioSource.Stop();
         }
     }
 }

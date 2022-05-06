@@ -11,6 +11,7 @@ public class Thief : MonoBehaviour
     [SerializeField]private GameObject _waypoint;
     [SerializeField]private GameObject _exit;
     [SerializeField] private float _step;
+    
     private SpriteRenderer _spriteRenderer;
     private bool _isReached = false;
 
