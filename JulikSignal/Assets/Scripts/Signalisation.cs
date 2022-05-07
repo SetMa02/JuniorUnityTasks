@@ -6,7 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Signalisation : MonoBehaviour
 {
-    [SerializeField] private float _peroidiciy = 3;  
+    [SerializeField] private float _peroidiciy = 3;
+    [SerializeField] private Door _door;
     
     private AudioSource _audioSource;
     private float _minVolume = 0;
@@ -18,38 +19,43 @@ public class Signalisation : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnEnable()
     {
-        if (other.gameObject.TryGetComponent<Thief>(out Thief julik))
-        {
-            _audioSource.Play();
-            _audioSource.volume = _minVolume;
-            StartCoroutine(SignalisationManager());
-        }
+        _door.TheifWalk += ThiefDetected;
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnDisable()
     {
-        StartCoroutine(SignalisationManager());
+        _door.TheifWalk -= ThiefDetected;
     }
 
-    private IEnumerator SignalisationManager()
+    private void ThiefDetected()
     {
-        if (_isEnter == false)
+        StartCoroutine(ManageSignalisation());
+    }
+
+    private void MoveSound(float volume)
+    {
+        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _maxVolume, _peroidiciy * Time.deltaTime);
+    }
+
+    private IEnumerator ManageSignalisation()
+    {
+        if (_isEnter == false) 
         {
             _isEnter = true;
-            while (_audioSource.volume != _maxVolume)
+            while (_audioSource.volume != _maxVolume) 
             {
-                _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _maxVolume, _peroidiciy * Time.deltaTime);
+                MoveSound(_maxVolume);
                 yield return null;
             }
         }
-        else if(_isEnter == true)
+        else if(_isEnter == true) 
         {
             _isEnter = false;
-            while (_audioSource.volume != _minVolume)
+            while (_audioSource.volume != _minVolume) 
             {
-                _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _minVolume, _peroidiciy * Time.deltaTime);
+                MoveSound(_minVolume);
                 yield return null;
             }
             _audioSource.Stop();

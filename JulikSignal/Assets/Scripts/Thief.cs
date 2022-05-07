@@ -29,15 +29,20 @@ public class Thief : MonoBehaviour
         }
     }
 
+    private void MoveToPoint(Vector2 point)
+    {
+        transform.position = Vector2.Lerp(transform.position, point, _step * Time.deltaTime);
+    }
+
     private void FixedUpdate()
     {
         if (_isReached == false)
         {
-            transform.position = Vector2.Lerp(transform.position, _waypoint.transform.position, _step * Time.deltaTime);
+            MoveToPoint(_waypoint.transform.position);
         }
         else if (_isReached == true)
         {
-            transform.position = Vector2.Lerp(transform.position, _exit.transform.position, _step * Time.deltaTime);
+            MoveToPoint(_exit.transform.position);
         }
     }
 }
