@@ -180,7 +180,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5e80f0a8781b3c348a85d1568bba6ebc, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0
   m_Pitch: 1
   Loop: 0
@@ -468,7 +468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _waypoint: {fileID: 580401140}
   _exit: {fileID: 1727752676}
-  _step: 0.5
+  _step: 4.14
 --- !u!61 &839203519
 BoxCollider2D:
   m_ObjectHideFlags: 0
