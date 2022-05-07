@@ -36,13 +36,14 @@ public class Signalisation : MonoBehaviour
 
     private void MoveSound(float volume)
     {
-        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _maxVolume, _peroidiciy * Time.deltaTime);
+        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, volume, _peroidiciy * Time.deltaTime);
     }
 
     private IEnumerator ManageSignalisation()
     {
         if (_isEnter == false) 
         {
+            _audioSource.Play();
             _isEnter = true;
             while (_audioSource.volume != _maxVolume) 
             {
