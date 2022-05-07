@@ -12,7 +12,6 @@ public class Signalisation : MonoBehaviour
     private AudioSource _audioSource;
     private float _minVolume = 0;
     private float _maxVolume = 1;
-    private bool _isEnter = false;
 
     private void Start()
     {
@@ -21,44 +20,37 @@ public class Signalisation : MonoBehaviour
 
     private void OnEnable()
     {
-        _door.TheifWalk += ThiefDetected;
+        _door.ThiefEntered += ThiefDetected;
+        _door.ThiefExit += ThiefLeave;
     }
 
     private void OnDisable()
     {
-        _door.TheifWalk -= ThiefDetected;
+        _door.ThiefEntered -= ThiefDetected;
+        _door.ThiefExit -= ThiefLeave;
     }
 
     private void ThiefDetected()
     {
-        StartCoroutine(ManageSignalisation());
+        StartCoroutine(ManageSignalisation(_maxVolume));
+        _audioSource.Play();
     }
 
-    private void MoveSound(float volume)
+    private void ThiefLeave()
     {
-        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, volume, _peroidiciy * Time.deltaTime);
+        StartCoroutine(ManageSignalisation(_minVolume));
     }
-
-    private IEnumerator ManageSignalisation()
+    
+    private IEnumerator ManageSignalisation(float targetValue)
     {
-        if (_isEnter == false) 
+        while (_audioSource.volume != targetValue) 
         {
-            _audioSource.Play();
-            _isEnter = true;
-            while (_audioSource.volume != _maxVolume) 
-            {
-                MoveSound(_maxVolume);
-                yield return null;
-            }
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetValue, _peroidiciy * Time.deltaTime);
+            yield return null;
         }
-        else if(_isEnter == true) 
+
+        if (targetValue == _minVolume)
         {
-            _isEnter = false;
-            while (_audioSource.volume != _minVolume) 
-            {
-                MoveSound(_minVolume);
-                yield return null;
-            }
             _audioSource.Stop();
         }
     }
