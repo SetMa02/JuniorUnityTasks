@@ -9,17 +9,16 @@ public class Signalisation : MonoBehaviour
     [SerializeField] private float _peroidiciy = 3;
     [SerializeField] private Door _door;
 
-    private IEnumerator _startSignalisationManager;
-    private IEnumerator _stopSignalisationManager;
+    private IEnumerator _signalisationManager;
     private AudioSource _audioSource;
+    private bool _isStop = false;
     private float _minVolume = 0;
     private float _maxVolume = 1;
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
-        _startSignalisationManager = ManageSignalisation(_maxVolume);
-        _stopSignalisationManager = ManageSignalisation(_minVolume);
+        _signalisationManager = ManageSignalisation(_maxVolume);
     }
 
     private void OnEnable()
@@ -37,24 +36,23 @@ public class Signalisation : MonoBehaviour
     private void PlaySignalisation()
     {
         _audioSource.Play();
-        if (_stopSignalisationManager != null)
+        if (_signalisationManager != null && _isStop == false )
         {
-            StopCoroutine(_stopSignalisationManager);
+            StartCoroutine(_signalisationManager);
         }
-
-        StartCoroutine(_startSignalisationManager);
-        
+        else if (_signalisationManager != null && _isStop == true )
+        {
+            StopCoroutine(_signalisationManager);
+            _signalisationManager = ManageSignalisation(_minVolume);
+            StartCoroutine(_signalisationManager);
+        }
     }
 
     private void StopSignalisation()
     {
-        if (_startSignalisationManager != null)
-        {
-            StopCoroutine(_startSignalisationManager);
-        }
-
-        StartCoroutine(_stopSignalisationManager);
-
+        _isStop = true;
+        
+        PlaySignalisation();
     }
 
     private IEnumerator ManageSignalisation(float targetValue)
