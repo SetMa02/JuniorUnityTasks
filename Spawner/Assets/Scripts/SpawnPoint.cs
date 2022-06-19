@@ -2,7 +2,7 @@
 
 namespace DefaultNamespace
 {
-    public class Spawner : MonoBehaviour
+    public class SpawnPoint : MonoBehaviour
     {
         [SerializeField] private GameObject _enemy;
 

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class SpawnerManager : MonoBehaviour
 {
-    [SerializeField] private Spawner _spawnerWest;
-    [SerializeField] private Spawner _spawnerEast;
+    [SerializeField] private SpawnPoint spawnPointWest;
+    [SerializeField] private SpawnPoint spawnPointEast;
     [SerializeField] private float _delay;
 
     private void Start()
@@ -17,12 +17,13 @@ public class SpawnerManager : MonoBehaviour
 
     private IEnumerator Spawn()
     {
+        WaitForSeconds delay = new WaitForSeconds(_delay);
         while (true)
         {
-            _spawnerWest.SpawnEnemy();
-            yield return new WaitForSeconds(_delay);
-            _spawnerEast.SpawnEnemy();
-            yield return new WaitForSeconds(_delay);
+            spawnPointWest.SpawnEnemy();
+            yield return delay;
+            spawnPointEast.SpawnEnemy();
+            yield return delay;
         }
     }
 }
