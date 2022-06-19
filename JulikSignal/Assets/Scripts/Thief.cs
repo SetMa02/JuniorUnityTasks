@@ -13,36 +13,37 @@ public class Thief : MonoBehaviour
     [SerializeField] private float _step;
     
     private SpriteRenderer _spriteRenderer;
-    private bool _isReached = false;
+    private IEnumerator _wayManager;
 
     private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _wayManager = MoveToPoint(_waypoint.gameObject.transform.position);
+        StartCoroutine(_wayManager);
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent<Waypoint>(out Waypoint waypoint))
         {
-            _isReached = true;
             _spriteRenderer.flipX = true;
+            ReachedPoint();
         }
     }
 
-    private void MoveToPoint(Vector2 point)
+    private void ReachedPoint()
     {
-        transform.position = Vector2.Lerp(transform.position, point, _step * Time.deltaTime);
+        StopCoroutine(_wayManager);
+        _wayManager = MoveToPoint(_exit.gameObject.transform.position);
+        StartCoroutine(_wayManager);
     }
 
-    private void FixedUpdate()
+    private IEnumerator MoveToPoint(Vector2 point)
     {
-        if (_isReached == false)
+        while (Vector3.Distance(transform.position, point) > float.Epsilon)
         {
-            MoveToPoint(_waypoint.transform.position);
-        }
-        else if (_isReached == true)
-        {
-            MoveToPoint(_exit.transform.position);
+            transform.position = Vector3.MoveTowards(transform.position, point, _step * Time.deltaTime);
+            yield return null;
         }
     }
 }
