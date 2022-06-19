@@ -468,7 +468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _waypoint: {fileID: 580401140}
   _exit: {fileID: 1727752676}
-  _step: 4.14
+  _step: 4
 --- !u!61 &839203519
 BoxCollider2D:
   m_ObjectHideFlags: 0
