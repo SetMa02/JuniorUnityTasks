@@ -35,9 +35,9 @@ public class Signalisation : MonoBehaviour
 
     private void PlaySignalisation()
     {
-        _audioSource.Play();
         if (_signalisationManager != null && _isStop == false )
         {
+            _audioSource.Play();
             StartCoroutine(_signalisationManager);
         }
         else if (_signalisationManager != null && _isStop == true )
@@ -51,7 +51,6 @@ public class Signalisation : MonoBehaviour
     private void StopSignalisation()
     {
         _isStop = true;
-        
         PlaySignalisation();
     }
 
