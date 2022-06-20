@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -6,9 +7,8 @@ namespace DefaultNamespace
     public class EnemySpawner : MonoBehaviour
     {
         [SerializeField] private Enemy _enemy;
-        [SerializeField] private EnemySpawner _enemySpawnerWest;
-        [SerializeField] private EnemySpawner _enemySpawnerEast;
-        [SerializeField] private float _delay;
+        [SerializeField] private float _startDelay;
+        [SerializeField] private float _periodicity;
 
         private void Start()
         {
@@ -22,13 +22,16 @@ namespace DefaultNamespace
         
         private IEnumerator Spawn()
         {
-            WaitForSeconds delay = new WaitForSeconds(_delay);
+            WaitForSeconds periodicity = new WaitForSeconds(_periodicity);
+            
+            WaitForSeconds startDelay = new WaitForSeconds(_startDelay);
+
+            yield return startDelay;
+           
             while (true)
             {
-                _enemySpawnerWest.SpawnEnemy();
-                yield return delay;
-                _enemySpawnerEast.SpawnEnemy();
-                yield return delay;
+                SpawnEnemy();
+                yield return periodicity;
             }
         }
     }
