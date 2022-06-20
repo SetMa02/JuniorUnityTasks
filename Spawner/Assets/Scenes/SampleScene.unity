@@ -328,7 +328,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25faafec8854ea5bbeb86e0d088c0d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 4770249132733543183, guid: cf1a69a06d73e1e4d803c587ce4a712d, type: 3}
+  _enemy: {fileID: -4726147474412489847, guid: cf1a69a06d73e1e4d803c587ce4a712d, type: 3}
+  _startDelay: 2
+  _periodicity: 2
 --- !u!4 &1357873110
 Transform:
   m_ObjectHideFlags: 0
@@ -352,7 +354,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1590079685}
-  - component: {fileID: 1590079684}
   m_Layer: 0
   m_Name: SpawnArea
   m_TagString: Untagged
@@ -360,21 +361,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1590079684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1590079683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 643f8a20a4d126d49b1b5ffe509fb09b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnPointWest: {fileID: 0}
-  _spawnPointEast: {fileID: 0}
-  _delay: 2
 --- !u!4 &1590079685
 Transform:
   m_ObjectHideFlags: 0
@@ -420,7 +406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25faafec8854ea5bbeb86e0d088c0d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 4770249132733543183, guid: cf1a69a06d73e1e4d803c587ce4a712d, type: 3}
+  _enemy: {fileID: -4726147474412489847, guid: cf1a69a06d73e1e4d803c587ce4a712d, type: 3}
+  _startDelay: 0
+  _periodicity: 2
 --- !u!4 &1788356450
 Transform:
   m_ObjectHideFlags: 0
