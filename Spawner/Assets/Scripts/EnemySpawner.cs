@@ -30,6 +30,7 @@ namespace DefaultNamespace
            
             while (true)
             {
+                yield return periodicity;
                 SpawnEnemy();
                 yield return periodicity;
             }
