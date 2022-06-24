@@ -14,6 +14,7 @@ public class Movement : MonoBehaviour
     private SpriteRenderer _sprite;
     private Vector3 _direction;
     private Rigidbody2D _rigidbody;
+    private bool _isGrounded;
 
     private void Start()
     {
@@ -25,6 +26,7 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         Walk();
+        Jump();
     }
 
     private void Walk()
@@ -33,7 +35,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             _direction = Vector3.left;
-            if (transform.position.x > 0)
+            if (_direction.x < 0)
             {
                 _sprite.flipX = true;
             }
@@ -41,7 +43,7 @@ public class Movement : MonoBehaviour
         else if (Input.GetKey(KeyCode.D))
         {
             _direction = Vector3.right;
-            if (transform.position.x < 0)
+            if (_direction.x > 0)
             {
                 _sprite.flipX = false;
             }
@@ -51,5 +53,31 @@ public class Movement : MonoBehaviour
         _direction.y = _rigidbody.velocity.y;
         _rigidbody.velocity = _direction;
         _animator.SetFloat("Speed", Math.Abs(_direction.x));
+    }
+
+    private void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded == true)
+        {
+            _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            _animator.SetTrigger("Jump");
+        }
+        _animator.SetBool("IsGrounded", _isGrounded);
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.GetComponent<Platform>())
+        {
+            _isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.GetComponent<Platform>())
+        {
+            _isGrounded = false;
+        }
     }
 }
