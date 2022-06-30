@@ -10,14 +10,8 @@ public class Enemy : MonoBehaviour
    
     [SerializeField] private float _damage;
     [SerializeField] private float _health;
-    
-    
 
-    private void Start()
-    {
-        
-       
-    }
-    
+    public float Health => _health;
+    public float Damage => _damage;
     
 }

@@ -20,6 +20,7 @@ public class EnemyPatrol : MonoBehaviour
     private float _currentWaitTime;
     private Rigidbody2D _rigidbody;
     private GroundDetection _detection;
+    private Enemy _enemy;
     
     private void Start()
     {
@@ -27,31 +28,45 @@ public class EnemyPatrol : MonoBehaviour
         _animator = GetComponent<Animator>();
         _sprite = GetComponent<SpriteRenderer>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _enemy = GetComponent<Enemy>();
         _targetPoint = _leftEdge;
         _currentWaitTime = _waitTime;
-        StartCoroutine(MoveToPoint());
     }
 
     private void FixedUpdate()
     {
-        
+        MoveToPoint();
     }
 
-    private IEnumerator MoveToPoint()
+    private void MoveToPoint()
     {
-        WaitForSeconds _patrol = new WaitForSeconds(_waitTime);
-        
-        while (transform.position.x < Math.Abs(_targetPoint.transform.position.x))
+        if (_enemy.Health >= 0 && transform.position.x != _targetPoint.transform.position.x && _detection.IsGrounded)
         {
-            _direction = Vector3.zero;
-            _direction = Vector3.MoveTowards(transform.position, _targetPoint.transform.position,_speed * Time.deltaTime );
-            _direction.y = _rigidbody.velocity.y;
-            _rigidbody.velocity = _direction;
-            _animator.SetFloat("Speed", Math.Abs(_direction.x));
+            transform.position = Vector3.MoveTowards(transform.position, _targetPoint.transform.position, _speed * Time.deltaTime); 
+            _animator.SetFloat("Speed", Math.Abs(_rigidbody.velocity.x));
+        }
+        else if (transform.position.x >= Math.Abs(_targetPoint.transform.position.x))
+        {
+            _rigidbody.velocity = Vector2.zero;
+            _currentWaitTime -= Time.deltaTime;
+            if (_currentWaitTime <= 0)
+            {
+                ChangeTargetPoint();
+            }
+        }
+    }
+
+    private void ChangeTargetPoint()
+    {
+        if (_targetPoint == _leftEdge)
+        {
+            _targetPoint = _rightEdge;
+        }
+        else
+        {
+            _targetPoint = _leftEdge;
         }
 
-        yield return _patrol;
-        
-        Debug.Log("PATROL");
+        _currentWaitTime = _waitTime;
     }
 }
