@@ -3,28 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(GroundDetection))]
 public class EnemyPatrol : MonoBehaviour
 {
-    [SerializeField] private Point _leftEdge;
-    [SerializeField] private Point _rightEdge;
+    [SerializeField] private List<Point> _points;
     [SerializeField] private float _speed;
-    private SpriteRenderer _sprite;
     private Point _targetPoint;
     private Vector3 _direction;
-    private Rigidbody2D _rigidbody;
     private GroundDetection _detection;
-    private Enemy _enemy;
-    
+    private int _nextPoint;
+
     private void Start()
     {
         _detection = GetComponent<GroundDetection>();
-        _sprite = GetComponent<SpriteRenderer>();
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _enemy = GetComponent<Enemy>();
-        _targetPoint = _leftEdge;
+        _targetPoint = _points[0];
+    }
+
+    private void OnEnable()
+    {
+        foreach (var point in _points)
+        {
+            point.Reched += ChangeTargetPoint;
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (var point in _points)
+        {
+            point.Reched -= ChangeTargetPoint;
+        }
     }
 
     private void FixedUpdate()
@@ -34,36 +42,24 @@ public class EnemyPatrol : MonoBehaviour
 
     private void MoveToPoint()
     {
-        if (_targetPoint == _leftEdge)
+        if (_detection.IsGrounded == true)
         {
-            _rigidbody.velocity = Vector2.left * _speed;
-
-            if (transform.position.x <= _targetPoint.transform.position.x)
-            {
-                ChangeTargetPoint();
-            }
+            _direction = transform.position;
+            _direction = Vector3.MoveTowards(_direction, _targetPoint.transform.position, _speed * Time.deltaTime);
+            transform.position = new Vector3(_direction.x, transform.position.y, transform.position.z);
         }
-        else if(_targetPoint == _rightEdge)
-        {
-            _rigidbody.velocity = Vector2.right * _speed;
-            if (transform.position.x >= _targetPoint.transform.position.x)
-            {
-                ChangeTargetPoint();
-            }
-        }
-        
     }
 
     private void ChangeTargetPoint()
     {
-        if (_targetPoint == _leftEdge)
-            
+        _nextPoint = _points.IndexOf(_targetPoint);
+        _nextPoint++;
+        if (_nextPoint == _points.Capacity)
         {
-            _targetPoint = _rightEdge;
+            _nextPoint = 0;
         }
-        else
-        {
-            _targetPoint = _leftEdge;
-        }
+
+        Debug.Log(_nextPoint);
+        _targetPoint = _points[_nextPoint];
     }
 }

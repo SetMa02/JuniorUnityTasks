@@ -9,13 +9,16 @@ using UnityEngine;
 [RequireComponent(typeof(GroundDetection))]
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float _speed;
+    [SerializeField] private float _rapidability;
     [SerializeField] private float _jumpForce;
     private Animator _animator;
     private SpriteRenderer _sprite;
     private Vector3 _direction;
     private Rigidbody2D _rigidbody;
     private GroundDetection _groundDetection;
+    private const string Speed = "Speed";
+    private const string IsGrounded = "IsGrounded";
+    private const string Jump = "Jump";
 
     private void Start()
     {
@@ -28,7 +31,7 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         Walk();
-        Jump();
+        StartJump();
     }
 
     private void Walk()
@@ -51,19 +54,19 @@ public class Movement : MonoBehaviour
             }
         }
 
-        _direction *= _speed;
+        _direction *= _rapidability;
         _direction.y = _rigidbody.velocity.y;
         _rigidbody.velocity = _direction;
-        _animator.SetFloat("Speed", Math.Abs(_direction.x));
+        _animator.SetFloat(Speed, Math.Abs(_direction.x));
     }
 
-    private void Jump()
+    private void StartJump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && _groundDetection.IsGrounded == true)
         {
             _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-            _animator.SetTrigger("Jump");
+            _animator.SetTrigger(Jump);
         }
-        _animator.SetBool("IsGrounded", _groundDetection.IsGrounded);
+        _animator.SetBool(IsGrounded, _groundDetection.IsGrounded);
     }
 }

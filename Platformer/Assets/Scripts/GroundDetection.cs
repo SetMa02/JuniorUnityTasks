@@ -5,22 +5,21 @@ using UnityEngine;
 
 public class GroundDetection : MonoBehaviour
 {
-    private bool _isGrounded;
-    public bool IsGrounded => _isGrounded;
+    public bool IsGrounded { get; private set; }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<Platform>())
         {
-            _isGrounded = true;
+            IsGrounded = true;
         }
     }
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.GetComponent<Platform>())
+        if (other.gameObject.TryGetComponent<Platform>(out Platform platform))
         {
-            _isGrounded = false;
+            IsGrounded = false;
         }
     }
 }
