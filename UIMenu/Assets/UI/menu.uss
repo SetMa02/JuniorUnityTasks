@@ -1,0 +1,33 @@
+.menu-button {
+    border-left-color: rgba(0, 92, 115, 255);
+    border-right-color: rgba(0, 92, 115, 255);
+    border-top-color: rgba(0, 92, 115, 255);
+    border-bottom-color: rgba(0, 92, 115, 255);
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 12px;
+    border-top-left-radius: 19px;
+    border-bottom-left-radius: 19px;
+    border-top-right-radius: 19px;
+    border-bottom-right-radius: 19px;
+    background-color: rgba(1, 176, 224, 255);
+    font-size: 20px;
+    width: 350px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    transition-duration: 0.2s;
+    -unity-text-align: middle-center;
+}
+
+.menu-button:hover {
+    border-left-color: rgba(0, 38, 55, 255);
+    border-right-color: rgba(0, 38, 55, 255);
+    border-top-color: rgba(0, 38, 55, 255);
+    border-bottom-color: rgba(0, 38, 55, 255);
+    width: 360px;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+}

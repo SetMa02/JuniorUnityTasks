@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; width: 100%; height: 100%; align-items: center; justify-content: flex-end;">
+        <ui:Label text="SetMa Game" display-tooltip-when-elided="true" style="font-size: 25px; color: rgb(0, 0, 0); white-space: nowrap; -unity-font-style: bold; -unity-font: none; -unity-text-align: upper-center;" />
+        <ui:VisualElement name="container" style="flex-shrink: 0; height: 80%; width: 100%; margin-top: 0;" />
+    </ui:VisualElement>
+</ui:UXML>
