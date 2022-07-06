@@ -17,23 +17,15 @@ public class Player : MonoBehaviour
       HealthChanged.Invoke(_currentHealth, _maxHealth);
    }
 
-   public void ApplyDamage(float damage)
+   public void Damage(float damage)
    {
-      _currentHealth -= damage;
-      if (_currentHealth < 0)
-      {
-         _currentHealth = 0;
-      }
+      _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
       HealthChanged.Invoke(_currentHealth, _maxHealth);
    }
 
-   public void RestoreHealth(float health)
+   public void Heal(float health)
    {
-      _currentHealth += health;
-      if (_currentHealth > _maxHealth)
-      {
-         _currentHealth = _maxHealth;
-      }
+      _currentHealth = _currentHealth = Mathf.Clamp(_currentHealth + health, 0, _maxHealth);
       HealthChanged.Invoke(_currentHealth, _maxHealth);
    }
 }
